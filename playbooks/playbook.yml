@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+
+  roles:
+    - role: geerlingguy.nginx
+    - role: geerlingguy.docker
+      vars:
+        docker_users:
+          - vagrant
+
+  tasks:
+    - name: update cache
+      apt: update_cache=yes cache_valid_time=86400 #One day
+    
+    - name: install additional tools
+      apt:
+        state: present
+        name:
+          - net-tools
+          - curl
+          - htop
